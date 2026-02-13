@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
 
 const ShoppingListsPage = () => {
-    const { user, logOut } = useAuth();
+    const { logOut } = useAuth();
 
     return (
         <div onClick={() => logOut()}>
