@@ -8,6 +8,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import ShoppingListsPage from "./ShoppingListsPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
+import ItemsPage from "./ItemsPage";
+import ErrorPage from "./ErrorPage";
 
 //midlewares
 import { loginAction } from "../router/actions/loginAction";
@@ -15,9 +17,11 @@ import { loginAction } from "../router/actions/loginAction";
 //Actions
 import { registerAction } from "../router/actions/registerAction";
 import { authMiddleware } from "../router/middleware/authMiddleware";
-import ItemsPage from "./ItemsPage";
+import { addItemAction } from "../router/actions/addItemAction";
+import { deleteItemAction } from "../router/actions/deleteItemAction";
 
 //Loaders
+import { itemsLoader } from "../router/loaders/itemsLoader";
 
 const router = createBrowserRouter([
     {
@@ -31,10 +35,15 @@ const router = createBrowserRouter([
     {
         path: "/",
         middleware: [authMiddleware],
+        errorElement: ErrorPage,
         Component: MainLayout,
         children: [
             { index: true, Component: ShoppingListsPage },
-            { path: "items", Component: ItemsPage },
+            { path: "items", Component: ItemsPage, action: addItemAction, loader: itemsLoader },
+            {
+                path: "delete-item",
+                action: deleteItemAction,
+            },
         ],
     },
 ]);

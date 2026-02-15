@@ -1,28 +1,40 @@
+import { Box, Stack } from "@mui/material";
 import ItemSearchAndAdd from "../components/items/ItemSearchAndAdd";
 import ItemsList from "../components/items/ItemsList";
+import { useLoaderData } from "react-router";
+import type { Item } from "../types/items";
+import { useState, useTransition } from "react";
 
 const ItemsPage = () => {
-    //Text filed na zapasání nové položky
-    //Když budu do text inputu psát tak se mu musí zárove%n podtím filtrovat položky dle toho ci píšu
-    //V jakémkoliv okamzáku budu moc klinkout n a + a přidat položku
-    //po přidání se mi vynuluje input a mohu přidávat znova
-    //Dialog komponnta na odtranění a nebo potvrzení
+    const data = useLoaderData<Item[]>();
+    const [query, setQuery] = useState("");
+    const [deferredQuery, setDeferredQuery] = useState("");
+    const [isPending, startTransition] = useTransition();
 
-    //Page
-    //Bude zde searech inptu který bude zároveň inputem pro přidání itemu
+    const handleQueryChange = (newQuery: string) => {
+        setQuery(newQuery);
+        startTransition(() => {
+            setDeferredQuery(newQuery);
+        });
+    };
 
-    //List
-    //tady budu potřebovat data z databíze o všech items a mapem je vypsat
-    //Bude zde probíhat filtrace dle search inputu
-
-    //Item
-    //Prost= zobrazení itemu
+    const filteredData = data.filter((item) =>
+        item.name.toLowerCase().includes(deferredQuery.toLowerCase())
+    );
 
     return (
-        <>
-            <ItemSearchAndAdd />
-            <ItemsList />
-        </>
+        <Stack spacing={5}>
+            <ItemSearchAndAdd value={query} onChange={handleQueryChange} />
+
+            <Box
+                sx={{
+                    opacity: isPending ? 0.6 : 1,
+                    transition: "opacity 0.2s ease",
+                }}
+            >
+                <ItemsList items={filteredData} />
+            </Box>
+        </Stack>
     );
 };
 

@@ -12,11 +12,8 @@ const theme = createTheme({
             contrastText: "#ffffff",
         },
     },
-    typography: {
-        fontSize: 16,
-    },
     shape: {
-        borderRadius: 24,
+        //borderRadius: 24,
     },
 });
 

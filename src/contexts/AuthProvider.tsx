@@ -58,8 +58,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
                 email: session.user.user_metadata.email,
             };
 
-            console.log("_event:", _event);
-            console.log("seasson:", session);
+            //console.log("_event:", _event);
+            //console.log("seasson:", session);
 
             setUser(user);
             setIsLoading(false);

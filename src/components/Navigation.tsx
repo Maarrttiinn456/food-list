@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import FormatListBulletedAddIcon from "@mui/icons-material/FormatListBulletedAdd";
@@ -7,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 import { useLocation, useNavigate } from "react-router";
+import { Paper } from "@mui/material";
 
 const Navigation = () => {
     const navigate = useNavigate();
@@ -15,8 +15,19 @@ const Navigation = () => {
     const value = location.pathname;
 
     return (
-        <Box sx={{ width: "100%", position: "fixed", bottom: 0, left: 0 }}>
+        <Paper
+            sx={{
+                p: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+            }}
+        >
             <BottomNavigation
+                sx={{ width: "100%" }}
                 showLabels
                 value={value}
                 onChange={(_, newValue) => navigate(newValue)}
@@ -30,7 +41,7 @@ const Navigation = () => {
                 <BottomNavigationAction label="Položky" value="/items" icon={<AddIcon />} />
                 <BottomNavigationAction label="Recepty" value="/recipes" icon={<MenuBookIcon />} />
             </BottomNavigation>
-        </Box>
+        </Paper>
     );
 };
 
