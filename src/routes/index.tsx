@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     {
         path: "/",
         middleware: [authMiddleware],
-        errorElement: ErrorPage,
+        errorElement: <ErrorPage />,
         Component: MainLayout,
         children: [
             { index: true, Component: ShoppingListsPage },

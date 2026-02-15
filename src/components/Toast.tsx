@@ -16,7 +16,7 @@ const Toast = ({
     message = "Akce byla úspěšná!",
     severity = "success",
 }: ToastProps) => {
-    const handleClose = (event: SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
+    const handleClose = (_event: SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
         if (reason === "clickaway") return;
         onClose();
     };
