@@ -1,7 +1,7 @@
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Form, useActionData, useNavigation, useSearchParams } from "react-router";
 import { Typography, TextField, Button, Box, Stack } from "@mui/material";
-import Toast from "../Toast";
+import { useSnackbar } from "notistack";
 
 type AuthFormProps = {
     mode: "register" | "login";
@@ -9,33 +9,32 @@ type AuthFormProps = {
 };
 
 function AuthForm({ mode, children }: AuthFormProps) {
+    const { enqueueSnackbar } = useSnackbar();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const registerStatus = searchParams.get("register");
+
     const errors = useActionData();
     const navigation = useNavigation();
 
     const submitting = navigation.state === "submitting";
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const isSuccess = searchParams.get("register") === "success";
-
-    const handleClose = () => {
-        const newParams = new URLSearchParams(searchParams);
-        newParams.delete("register");
-        setSearchParams(newParams, { replace: true });
-    };
+    useEffect(() => {
+        if (registerStatus === "success") {
+            enqueueSnackbar("Uživatel byl úspěšně registrován", { variant: "success" });
+        }
+        setSearchParams({}, { replace: true });
+    }, [registerStatus, enqueueSnackbar, setSearchParams]);
 
     return (
         <Form method="post">
-            <Toast
-                isOpen={isSuccess}
-                onClose={handleClose}
-                message="Registrace proběhla úspěšně!"
-            />
             <Stack spacing={2}>
                 {errors?.serverError && (
                     <Typography color="error" textAlign="center" variant="body2">
                         {errors.serverError}
                     </Typography>
                 )}
+
                 {mode === "register" && (
                     <TextField
                         label="Jméno"

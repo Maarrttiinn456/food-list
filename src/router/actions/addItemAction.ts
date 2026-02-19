@@ -24,6 +24,8 @@ export async function addItemAction({
 
     //Checked blank input
     if (!item || typeof item !== "string" || item.trim() === "") {
+        console.log("Prázdno");
+
         return { ok: false, message: "Název položky nesmí být prázdný." };
     }
 
@@ -34,12 +36,13 @@ export async function addItemAction({
         .select()
         .single();
 
-    //Error from supabase
     if (supabaseError) {
-        console.error("Supabase error:", supabaseError);
+        if (supabaseError.code === "23505") {
+            console.log("Duplicita");
+            return { ok: false, message: "Tato položka již v seznamu existuje." };
+        }
 
-        if (supabaseError.code === "23505")
-            return { ok: false, message: "Tato položka už v katalogu existuje." };
+        console.error("Supabase error:", supabaseError);
         return { ok: false, message: "Nepodařilo se uložit položku." };
     }
 

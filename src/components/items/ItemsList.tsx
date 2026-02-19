@@ -4,10 +4,12 @@ import { List, ListItem, ListItemText, IconButton, Typography, Paper, Box } from
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { Item } from "../../types/items";
 import ConfromDialog from "../ConfromDialog";
+import { useSnackbar } from "notistack";
 
 const ItemsList = ({ items }: { items: Item[] }) => {
+    const { enqueueSnackbar } = useSnackbar();
     //Modal
-    const [open, setOpen] = useState(false);
+    const [confrimOpen, setConfrimOpen] = useState(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     //Submit form
@@ -15,11 +17,11 @@ const ItemsList = ({ items }: { items: Item[] }) => {
 
     const handleClickOpen = (id: string) => {
         setSelectedId(id);
-        setOpen(true);
+        setConfrimOpen(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setConfrimOpen(false);
         setSelectedId(null);
     };
 
@@ -28,6 +30,7 @@ const ItemsList = ({ items }: { items: Item[] }) => {
             fetcher.submit({ itemId: selectedId }, { method: "post", action: "/delete-item" });
         }
         handleClose();
+        enqueueSnackbar("Položka smazána", { variant: "success" });
     };
 
     if (items.length === 0) {
@@ -36,7 +39,7 @@ const ItemsList = ({ items }: { items: Item[] }) => {
                 variant="body2"
                 sx={{ textAlign: "center", mt: 4, color: "text.secondary" }}
             >
-                V seznamu zatím není žádná položka.
+                V seznamu zatím není žádná položka s tímto názvem.
             </Typography>
         );
     }
@@ -46,7 +49,7 @@ const ItemsList = ({ items }: { items: Item[] }) => {
             <ConfromDialog
                 title="Smazat položku?"
                 text="Tato akce je nevratná. Opravdu chcete položku odstranit z katalogu?"
-                open={open}
+                open={confrimOpen}
                 handleClose={handleClose}
                 handleConfirmDelete={handleConfirmDelete}
             />

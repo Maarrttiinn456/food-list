@@ -58,14 +58,14 @@ const ErrorPage = () => {
                         <Button
                             variant="outlined"
                             startIcon={<ArrowBackIcon />}
-                            onClick={() => navigate(-1)} // Vrátí uživatele zpět
+                            onClick={() => navigate(-1)}
                         >
                             Zpět
                         </Button>
                         <Button
                             variant="contained"
                             startIcon={<RefreshIcon />}
-                            onClick={() => window.location.reload()} // Zkusí načíst znovu
+                            onClick={() => window.location.reload()}
                         >
                             Zkusit znovu
                         </Button>

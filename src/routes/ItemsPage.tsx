@@ -1,38 +1,34 @@
+import { useLoaderData } from "react-router";
 import { Box, Stack } from "@mui/material";
 import ItemSearchAndAdd from "../components/items/ItemSearchAndAdd";
 import ItemsList from "../components/items/ItemsList";
-import { useLoaderData } from "react-router";
 import type { Item } from "../types/items";
-import { useState, useTransition } from "react";
+import { useDeferredValue, useState } from "react";
 
 const ItemsPage = () => {
     const data = useLoaderData<Item[]>();
+
     const [query, setQuery] = useState("");
-    const [deferredQuery, setDeferredQuery] = useState("");
-    const [isPending, startTransition] = useTransition();
+    const deferredValue = useDeferredValue(query);
 
-    const handleQueryChange = (newQuery: string) => {
-        setQuery(newQuery);
-        startTransition(() => {
-            setDeferredQuery(newQuery);
-        });
-    };
+    //Hodnota která mi říká ještě mi běží vápočet hodnoty na pozadí (true/false)
+    const isProcesed = deferredValue !== query;
 
-    const filteredData = data.filter((item) =>
-        item.name.toLowerCase().includes(deferredQuery.toLowerCase())
+    const filtredItems = data.filter((item) =>
+        item.name.toLocaleLowerCase().includes(deferredValue.toLocaleLowerCase())
     );
 
     return (
-        <Stack spacing={5}>
-            <ItemSearchAndAdd value={query} onChange={handleQueryChange} />
+        <Stack spacing={2}>
+            <ItemSearchAndAdd value={query} onChange={setQuery} />
 
             <Box
                 sx={{
-                    opacity: isPending ? 0.6 : 1,
-                    transition: "opacity 0.2s ease",
+                    opacity: isProcesed ? 0.5 : 1,
+                    transition: "opacity 0.4s ease",
                 }}
             >
-                <ItemsList items={filteredData} />
+                <ItemsList items={filtredItems} />
             </Box>
         </Stack>
     );

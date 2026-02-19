@@ -10,6 +10,8 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import ItemsPage from "./ItemsPage";
 import ErrorPage from "./ErrorPage";
+import MealsPage from "./MealsPage";
+import AddMealPage from "./AddMealPage";
 
 //midlewares
 import { loginAction } from "../router/actions/loginAction";
@@ -35,7 +37,7 @@ const router = createBrowserRouter([
     {
         path: "/",
         middleware: [authMiddleware],
-        errorElement: ErrorPage,
+        errorElement: <ErrorPage />,
         Component: MainLayout,
         children: [
             { index: true, Component: ShoppingListsPage },
@@ -43,6 +45,20 @@ const router = createBrowserRouter([
             {
                 path: "delete-item",
                 action: deleteItemAction,
+            },
+            {
+                path: "meals",
+                children: [
+                    {
+                        index: true,
+                        Component: MealsPage,
+                    },
+                    {
+                        path: "add",
+                        Component: AddMealPage,
+                        loader: itemsLoader,
+                    },
+                ],
             },
         ],
     },
