@@ -11,12 +11,9 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useLoaderData } from "react-router";
 import type { Item } from "../../types/items";
-import { useState } from "react";
 
 const MealsForm = () => {
     const loaderData = useLoaderData();
-
-    const [itemsList, setItemsList] = useState();
 
     return (
         <Stack spacing={3} sx={{ width: "100%" }}>
