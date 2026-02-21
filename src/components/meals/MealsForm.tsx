@@ -9,8 +9,8 @@ import type { ItemsLoaderData } from "../../router/loaders/itemsLoader";
 
 const MealsForm = () => {
     const { items, categories } = useLoaderData<{
-        items: ItemsLoaderData[];
-        categories: CategoriesLoaderData[];
+        items: ItemsLoaderData;
+        categories: CategoriesLoaderData;
     }>();
     const { state, actions } = useMealsForm();
 
