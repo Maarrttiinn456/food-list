@@ -1,4 +1,4 @@
-import { CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
 type AuthFormWrapperProps = {
@@ -9,23 +9,34 @@ type AuthFormWrapperProps = {
 
 const AuthFormWrapper = ({ title, description, children }: AuthFormWrapperProps) => {
     return (
-        <CardContent sx={{ p: 4 }}>
-            <Typography
-                variant="h4"
-                component="h1"
-                gutterBottom
-                textAlign="center"
-                fontWeight="bold"
-            >
-                {title}
-            </Typography>
+        <Card
+            elevation={0}
+            sx={{
+                border: "1.5px solid",
+                borderColor: "divider",
+                borderRadius: "16px",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                background: "#fff",
+            }}
+        >
+            <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+                <Typography
+                    variant="h5"
+                    component="h1"
+                    gutterBottom
+                    fontWeight={700}
+                    letterSpacing="-0.3px"
+                >
+                    {title}
+                </Typography>
 
-            <Typography variant="body2" color="text.secondary" textAlign="center" mb={3}>
-                {description}
-            </Typography>
+                <Typography variant="body2" color="text.secondary" mb={3}>
+                    {description}
+                </Typography>
 
-            {children}
-        </CardContent>
+                {children}
+            </CardContent>
+        </Card>
     );
 };
 

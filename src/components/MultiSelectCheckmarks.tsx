@@ -16,6 +16,7 @@ const MenuProps = {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
             width: 250,
+            borderRadius: 12,
         },
     },
 };
@@ -45,14 +46,14 @@ export default function MultipleSelectCheckmarks({
     return (
         <div>
             <FormControl sx={{ width: "100%" }}>
-                <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                <InputLabel id="demo-multiple-checkbox-label">Kategorie</InputLabel>
                 <Select
                     labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
                     multiple
                     value={items}
                     onChange={handleChange}
-                    input={<OutlinedInput label="Tag" />}
+                    input={<OutlinedInput label="Kategorie" sx={{ borderRadius: "10px" }} />}
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                 >

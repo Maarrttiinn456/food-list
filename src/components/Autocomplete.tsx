@@ -17,13 +17,12 @@ const Autocomplete = ({ items, actions }: AutocompleteProps) => {
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    placeholder="Hledat surovinu..."
+                    label="Přidat surovinu"
+                    placeholder="Začni psát název…"
                     sx={{
                         "& .MuiOutlinedInput-root": {
-                            borderRadius: 4,
+                            borderRadius: "10px",
                             bgcolor: "background.paper",
-                            height: 60,
-                            fontSize: "1.1rem",
                         },
                     }}
                 />

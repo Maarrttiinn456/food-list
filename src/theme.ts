@@ -12,8 +12,42 @@ const theme = createTheme({
             contrastText: "#ffffff",
         },
     },
-    shape: {
-        //borderRadius: 24,
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: "10px",
+                    textTransform: "none",
+                    fontWeight: 600,
+                },
+            },
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                    },
+                },
+            },
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                input: {
+                    "&:-webkit-autofill": {
+                        WebkitBoxShadow: "0 0 0 100px #fff inset",
+                        WebkitTextFillColor: "#000",
+                        transition: "background-color 9999s ease-in-out 0s",
+                    },
+                    "&:-webkit-autofill:hover": {
+                        WebkitBoxShadow: "0 0 0 100px #fff inset",
+                    },
+                    "&:-webkit-autofill:focus": {
+                        WebkitBoxShadow: "0 0 0 100px #fff inset",
+                    },
+                },
+            },
+        },
     },
 });
 
