@@ -9,9 +9,9 @@ import ShoppingListsPage from "./ShoppingListsPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import ItemsPage from "./ItemsPage";
-import ErrorPage from "./ErrorPage";
 import MealsPage from "./MealsPage";
 import AddMealPage from "./AddMealPage";
+import ErrorPage from "./ErrorPage";
 
 //midlewares
 import { loginAction } from "../router/actions/loginAction";
@@ -21,9 +21,12 @@ import { registerAction } from "../router/actions/registerAction";
 import { authMiddleware } from "../router/middleware/authMiddleware";
 import { addItemAction } from "../router/actions/addItemAction";
 import { deleteItemAction } from "../router/actions/deleteItemAction";
+import { addMealAction } from "../router/actions/addMealAction";
 
 //Loaders
 import { itemsLoader } from "../router/loaders/itemsLoader";
+import { mealsLoader } from "../router/loaders/mealsLoader";
+import { itemsAndCategoriesLoader } from "../router/loaders/itemsAndCatagories";
 
 const router = createBrowserRouter([
     {
@@ -52,11 +55,13 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         Component: MealsPage,
+                        loader: mealsLoader,
                     },
                     {
                         path: "add",
                         Component: AddMealPage,
-                        loader: itemsLoader,
+                        loader: itemsAndCategoriesLoader,
+                        action: addMealAction,
                     },
                 ],
             },

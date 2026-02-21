@@ -1,5 +1,5 @@
 import { supabase } from "../../supabase/client";
-import type { AuthFormInputs } from "../../types/auth";
+import type { AuthFormInputs } from "../../types";
 import { redirect, type ActionFunctionArgs } from "react-router";
 
 export async function loginAction({ request }: ActionFunctionArgs) {

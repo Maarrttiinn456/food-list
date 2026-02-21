@@ -1,19 +1,20 @@
-import { useFetcher } from "react-router";
 import { useState } from "react";
+import { useFetcher } from "react-router";
+import { useSnackbar } from "notistack";
 import { List, ListItem, ListItemText, IconButton, Typography, Paper, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import type { Item } from "../../types/items";
 import ConfromDialog from "../ConfromDialog";
-import { useSnackbar } from "notistack";
+import type { ItemsLoaderData } from "../../router/loaders/itemsLoader";
+import type { AddItemActionData } from "../../router/actions/addItemAction";
 
-const ItemsList = ({ items }: { items: Item[] }) => {
+const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
     const { enqueueSnackbar } = useSnackbar();
     //Modal
     const [confrimOpen, setConfrimOpen] = useState(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     //Submit form
-    const fetcher = useFetcher();
+    const fetcher = useFetcher<AddItemActionData>();
 
     const handleClickOpen = (id: string) => {
         setSelectedId(id);

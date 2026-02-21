@@ -1,12 +1,12 @@
+import { useDeferredValue, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Box, Stack } from "@mui/material";
 import ItemSearchAndAdd from "../components/items/ItemSearchAndAdd";
 import ItemsList from "../components/items/ItemsList";
-import type { Item } from "../types/items";
-import { useDeferredValue, useState } from "react";
+import type { ItemsLoaderData } from "../router/loaders/itemsLoader";
 
 const ItemsPage = () => {
-    const data = useLoaderData<Item[]>();
+    const data = useLoaderData<ItemsLoaderData>();
 
     const [query, setQuery] = useState("");
     const deferredValue = useDeferredValue(query);
@@ -28,7 +28,7 @@ const ItemsPage = () => {
                     transition: "opacity 0.4s ease",
                 }}
             >
-                <ItemsList items={filtredItems} />
+                {filtredItems.length > 0 && <ItemsList items={filtredItems} />}
             </Box>
         </Stack>
     );

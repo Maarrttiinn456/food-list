@@ -1,10 +1,10 @@
 import { redirect } from "react-router";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "../../supabase/client";
-import { userContext } from "../context/authContext";
+import { userContextMiddleware } from "../context/authContext";
 
 type AuthMiddlewareContext = {
-    set: (key: typeof userContext, value: User | null) => void;
+    set: (key: typeof userContextMiddleware, value: User | null) => void;
 };
 
 export async function authMiddleware({ context }: { context: AuthMiddlewareContext }) {
@@ -16,7 +16,7 @@ export async function authMiddleware({ context }: { context: AuthMiddlewareConte
         throw redirect("/auth");
     }
 
-    context.set(userContext, session.user);
+    context.set(userContextMiddleware, session.user);
 
     return null;
 }
@@ -26,7 +26,7 @@ React router context buud používat v loaderech kdy se po overeni jestli je neb
 
 export async function loader({ context }) {
   // Tady už víš, že user existuje, protože authMiddleware proběhl jako první
-  const user = context.get(userContext); 
+  const user = context.get(userContextMiddleware); 
 
   // Můžeš rovnou tahat data z DB pro konkrétního uživatele
   const { data: lists } = await supabase

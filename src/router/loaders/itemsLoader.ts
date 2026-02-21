@@ -1,10 +1,9 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { userContext } from "../context/authContext";
+import { userContextMiddleware } from "../context/authContext";
 import { supabase } from "../../supabase/client";
-import type { Item } from "../../types/items";
 
-export const itemsLoader = async ({ context }: LoaderFunctionArgs): Promise<Item[]> => {
-    const user = context.get(userContext);
+export const itemsLoader = async ({ context }: LoaderFunctionArgs) => {
+    const user = context.get(userContextMiddleware);
 
     const { data, error } = await supabase
         .from("items")
@@ -16,5 +15,7 @@ export const itemsLoader = async ({ context }: LoaderFunctionArgs): Promise<Item
         throw new Response("Nepodařilo se načíst data z databáze", { status: 500 });
     }
 
-    return data as Item[];
+    return data ?? [];
 };
+
+export type ItemsLoaderData = Awaited<ReturnType<typeof itemsLoader>>;

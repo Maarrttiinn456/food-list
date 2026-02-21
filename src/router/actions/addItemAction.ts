@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "react-router";
 import { supabase } from "../../supabase/client";
-import { userContext } from "../context/authContext";
+import { userContextMiddleware } from "../context/authContext";
 
 export type ActionResponse = {
     ok: boolean;
@@ -12,7 +12,7 @@ export async function addItemAction({
     context,
 }: ActionFunctionArgs): Promise<ActionResponse> {
     //Contrext
-    const user = context.get(userContext);
+    const user = context.get(userContextMiddleware);
 
     if (!user) {
         return { ok: false, message: "Nejste přihlášen." };
@@ -48,3 +48,5 @@ export async function addItemAction({
 
     return { ok: true, message: "Položka byla úspěšně přidána." };
 }
+
+export type AddItemActionData = Awaited<ReturnType<typeof addItemAction>>;

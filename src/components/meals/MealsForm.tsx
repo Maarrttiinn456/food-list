@@ -1,19 +1,18 @@
-import {
-    Box,
-    TextField,
-    Typography,
-    Stack,
-    IconButton,
-    Autocomplete,
-    Paper,
-    Button,
-} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useLoaderData } from "react-router";
-import type { Item } from "../../types/items";
+import useMealsForm from "../../hooks/useMealsForm";
+import { Box, TextField, Typography, Stack, IconButton, Paper, Button } from "@mui/material";
+import MultiSelectCheckmarks from "../MultiSelectCheckmarks";
+import Autocomplete from "../Autocomplete";
+import type { CategoriesLoaderData } from "../../router/loaders/catagoriesLoader";
+import type { ItemsLoaderData } from "../../router/loaders/itemsLoader";
 
 const MealsForm = () => {
-    const loaderData = useLoaderData();
+    const { items, categories } = useLoaderData<{
+        items: ItemsLoaderData[];
+        categories: CategoriesLoaderData[];
+    }>();
+    const { state, actions } = useMealsForm();
 
     return (
         <Stack spacing={3} sx={{ width: "100%" }}>
@@ -31,6 +30,8 @@ const MealsForm = () => {
                     <TextField
                         variant="standard"
                         fullWidth
+                        value={state.mealName}
+                        onChange={(e) => actions.setMealName(e.target.value)}
                         placeholder="Název jídla"
                         slotProps={{
                             input: {
@@ -46,6 +47,8 @@ const MealsForm = () => {
                     <TextField
                         variant="standard"
                         fullWidth
+                        value={state.mealDescription}
+                        onChange={(e) => actions.setMealDescription(e.target.value)}
                         multiline
                         placeholder="Popis..."
                         slotProps={{
@@ -58,64 +61,75 @@ const MealsForm = () => {
                 </Stack>
             </Paper>
 
-            <Autocomplete
-                options={loaderData}
-                getOptionLabel={(option: Item) => option.name}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder="Hledat surovinu..."
-                        sx={{
-                            "& .MuiOutlinedInput-root": {
-                                borderRadius: 4,
-                                bgcolor: "background.paper",
-                                height: 60,
-                                fontSize: "1.1rem",
-                            },
-                        }}
-                    />
-                )}
-            />
+            {categories && (
+                <MultiSelectCheckmarks
+                    categories={categories}
+                    onChange={actions.handleCategoryChange}
+                />
+            )}
+
+            {items && <Autocomplete items={items} actions={actions} />}
 
             <Stack spacing={1}>
-                {[1, 2].map((item) => (
+                {state.itemsList.length === 0 && (
+                    <Typography variant="body2" color="text.secondary">
+                        Žádné suroviny
+                    </Typography>
+                )}
+                {state.itemsList.map((item) => (
                     <Box
-                        key={item}
+                        key={item.id}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        gap={2}
+                        p={2}
                         sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 2,
-                            p: 2,
                             borderRadius: 4,
                             bgcolor: "background.paper",
                             border: "1px solid",
                             borderColor: "divider",
                         }}
                     >
-                        <Typography sx={{ flex: 1, fontWeight: "600", fontSize: "1.05rem" }}>
-                            Špagety
-                        </Typography>
+                        <Typography sx={{ fontWeight: "600" }}>{item.name}</Typography>
 
-                        <TextField
-                            size="small"
-                            variant="standard"
-                            placeholder="0"
-                            slotProps={{
-                                input: {
-                                    disableUnderline: true,
-                                },
-                            }}
-                        />
+                        <Box display="flex" alignItems="center" gap={2} width={130}>
+                            <TextField
+                                variant="standard"
+                                placeholder="kg/ml/ks"
+                                value={item.quantity}
+                                onChange={(e) =>
+                                    actions.handleQuantityChange(item.id, e.target.value)
+                                }
+                                slotProps={{
+                                    input: {
+                                        disableUnderline: true,
+                                    },
+                                }}
+                            />
 
-                        <IconButton edge="end" aria-label="delete" color="error">
-                            <DeleteIcon />
-                        </IconButton>
+                            <IconButton
+                                edge="end"
+                                aria-label="delete"
+                                color="error"
+                                onClick={() => actions.handleDeleteItem(item.id)}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
                     </Box>
                 ))}
             </Stack>
 
-            <Button variant="contained" type="submit" size="large" fullWidth>
-                Přidat jídlo
+            <Button
+                variant="contained"
+                type="submit"
+                size="large"
+                fullWidth
+                disabled={state.isSubmitting}
+                onClick={() => actions.handleSubmit()}
+            >
+                {state.isSubmitting ? "Přidávám..." : "Přidat jídlo"}
             </Button>
         </Stack>
     );
