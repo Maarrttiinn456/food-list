@@ -69,18 +69,13 @@ const useMealsForm = () => {
         if (!actionData) return;
 
         if (actionData?.ok) {
-            setMealName("");
-            setMealDescription("");
-            setItemsList([]);
             localStorage.setItem("itemsList", JSON.stringify([]));
             enqueueSnackbar(actionData.message, { variant: "success" });
             navigate("/meals");
-        }
-
-        if (!actionData?.ok) {
+        } else {
             enqueueSnackbar(actionData.message, { variant: "error" });
         }
-    }, [fetcher.data]);
+    }, [fetcher.data, enqueueSnackbar, navigate]);
 
     return {
         state: {

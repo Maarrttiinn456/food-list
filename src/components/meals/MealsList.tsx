@@ -42,6 +42,7 @@ const MealsList = () => {
     const handleCloseMenu = () => {
         setAnchorEl(null);
         setActiveMealId(null);
+        console.log(activeMealId);
     };
 
     if (mealsWithItems.length === 0) {

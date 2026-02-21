@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,18 +33,14 @@ export default function MultipleSelectCheckmarks({
         const {
             target: { value },
         } = event;
-        setItems(typeof value === "string" ? value.split(",") : value);
-    };
+        const newItems = typeof value === "string" ? value.split(",") : value;
+        setItems(newItems);
 
-    useEffect(() => {
         const selectedCaregories = categories.filter(
-            (category) => category.name && items.includes(category.name)
+            (category) => category.name && newItems.includes(category.name)
         );
-
-        if (selectedCaregories.length > 0) {
-            onChange(selectedCaregories);
-        }
-    }, [items]);
+        onChange(selectedCaregories);
+    };
 
     return (
         <div>
