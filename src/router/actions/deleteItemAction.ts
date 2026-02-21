@@ -1,16 +1,16 @@
 import type { ActionFunctionArgs } from "react-router";
 import { supabase } from "../../supabase/client";
-import { userContext } from "../context/authContext";
+import { userContextMiddleware } from "../context/authContext";
 
 export const deleteItemAction = async ({ request, context }: ActionFunctionArgs) => {
-    const user = context.get(userContext);
+    const user = context.get(userContextMiddleware);
 
     if (!user) {
         return { ok: false, message: "Nejste přihlášen." };
     }
 
     const form = await request.formData();
-    const itemId = form.get("itemId");
+    const itemId = form.get("itemId") as string;
 
     if (!itemId) {
         return { ok: false, message: "Chybí ID položky." };

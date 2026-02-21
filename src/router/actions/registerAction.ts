@@ -1,5 +1,5 @@
 import { supabase } from "../../supabase/client";
-import type { AuthFormInputs } from "../../types/auth";
+import type { AuthFormInputs } from "../../types";
 import { redirect, type ActionFunctionArgs } from "react-router";
 
 export async function registerAction({ request }: ActionFunctionArgs) {
@@ -9,7 +9,9 @@ export async function registerAction({ request }: ActionFunctionArgs) {
     const password = String(formData.get("password") || "");
     const email = String(formData.get("email") || "");
 
-    const errors: Partial<Record<keyof AuthFormInputs | "serverError", string>> = {};
+    const errors: Partial<Record<keyof AuthFormInputs, string>> & {
+        serverError?: string;
+    } = {};
 
     if (!fullName) {
         errors.fullname = "Jméno je povinné";
@@ -28,7 +30,7 @@ export async function registerAction({ request }: ActionFunctionArgs) {
     }
 
     //fetch do databáze
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -43,8 +45,8 @@ export async function registerAction({ request }: ActionFunctionArgs) {
         return errors;
     }
 
-    console.log("Data:", data);
-    console.log("Error", error);
+    //console.log("Data:", data);
+    //console.log("Error", error);
 
     return redirect(`/auth?register=success`);
 }

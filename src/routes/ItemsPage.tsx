@@ -1,40 +1,54 @@
-import { Box, Stack } from "@mui/material";
+import { useDeferredValue, useState } from "react";
+import { useLoaderData } from "react-router";
+import { Box, Typography } from "@mui/material";
+import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import ItemSearchAndAdd from "../components/items/ItemSearchAndAdd";
 import ItemsList from "../components/items/ItemsList";
-import { useLoaderData } from "react-router";
-import type { Item } from "../types/items";
-import { useState, useTransition } from "react";
+import type { ItemsLoaderData } from "../router/loaders/itemsLoader";
+import PageHeader from "../components/PageHeader";
 
 const ItemsPage = () => {
-    const data = useLoaderData<Item[]>();
+    const data = useLoaderData<ItemsLoaderData>();
+
     const [query, setQuery] = useState("");
-    const [deferredQuery, setDeferredQuery] = useState("");
-    const [isPending, startTransition] = useTransition();
+    const deferredValue = useDeferredValue(query);
 
-    const handleQueryChange = (newQuery: string) => {
-        setQuery(newQuery);
-        startTransition(() => {
-            setDeferredQuery(newQuery);
-        });
-    };
+    const isProcesed = deferredValue !== query;
 
-    const filteredData = data.filter((item) =>
-        item.name.toLowerCase().includes(deferredQuery.toLowerCase())
+    const filtredItems = data.filter((item) =>
+        item.name.toLocaleLowerCase().includes(deferredValue.toLocaleLowerCase())
     );
 
     return (
-        <Stack spacing={5}>
-            <ItemSearchAndAdd value={query} onChange={handleQueryChange} />
+        <Box>
+            <PageHeader
+                title="Katalog položek"
+                subtitle={`${data.length} položek celkem`}
+                icon={<InventoryOutlinedIcon />}
+            />
+
+            <ItemSearchAndAdd value={query} onChange={setQuery} />
 
             <Box
                 sx={{
-                    opacity: isPending ? 0.6 : 1,
-                    transition: "opacity 0.2s ease",
+                    mt: 3,
+                    opacity: isProcesed ? 0.45 : 1,
+                    transition: "opacity 0.35s ease",
                 }}
             >
-                <ItemsList items={filteredData} />
+                {filtredItems.length > 0 && <ItemsList items={filtredItems} />}
+
+                {filtredItems.length === 0 && query.length > 0 && (
+                    <Typography
+                        variant="body2"
+                        sx={{ textAlign: "center", mt: 6, color: "text.secondary" }}
+                    >
+                        Žádná shoda pro „{query}". Stiskni <strong>Přidat</strong> pro vytvoření
+                        nové položky.
+                    </Typography>
+                )}
             </Box>
-        </Stack>
+        </Box>
     );
 };
 

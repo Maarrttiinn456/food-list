@@ -3,12 +3,17 @@ import { ThemeProvider } from "@mui/material";
 import router from "./routes/index.tsx";
 import theme from "./theme.ts";
 import AuthProvider from "./contexts/AuthProvider.tsx";
+import SnackbarProvider from "./contexts/SnackbarProvider.tsx";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const App = () => {
     return (
         <AuthProvider>
             <ThemeProvider theme={theme}>
-                <RouterProvider router={router} />
+                <CssBaseline />
+                <SnackbarProvider>
+                    <RouterProvider router={router} />
+                </SnackbarProvider>
             </ThemeProvider>
         </AuthProvider>
     );

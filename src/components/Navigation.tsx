@@ -37,7 +37,7 @@ const Navigation = () => {
                     value="/"
                     icon={<FormatListBulletedAddIcon />}
                 />
-                <BottomNavigationAction label="Jídla" value="/food" icon={<DinnerDiningIcon />} />
+                <BottomNavigationAction label="Jídla" value="/meals" icon={<DinnerDiningIcon />} />
                 <BottomNavigationAction label="Položky" value="/items" icon={<AddIcon />} />
                 <BottomNavigationAction label="Recepty" value="/recipes" icon={<MenuBookIcon />} />
             </BottomNavigation>

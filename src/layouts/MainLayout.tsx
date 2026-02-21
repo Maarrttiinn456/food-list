@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 
 const MainLayout = () => {
     return (
-        <Container sx={{ pt: 4, pb: 10 }}>
+        <Container sx={{ pt: 4, pb: 10 }} maxWidth="md">
             <Outlet />
             <Navigation />
         </Container>

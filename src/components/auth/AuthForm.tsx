@@ -1,7 +1,10 @@
-import { type ReactNode } from "react";
-import { Form, useActionData, useNavigation, useSearchParams } from "react-router";
-import { Typography, TextField, Button, Box, Stack } from "@mui/material";
-import Toast from "../Toast";
+import { useEffect, type ReactNode } from "react";
+import { useFetcher, useSearchParams } from "react-router";
+import { Typography, TextField, Button, Box, Stack, Alert } from "@mui/material";
+import { useSnackbar } from "notistack";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 type AuthFormProps = {
     mode: "register" | "login";
@@ -9,33 +12,32 @@ type AuthFormProps = {
 };
 
 function AuthForm({ mode, children }: AuthFormProps) {
-    const errors = useActionData();
-    const navigation = useNavigation();
-
-    const submitting = navigation.state === "submitting";
-
+    const { enqueueSnackbar } = useSnackbar();
     const [searchParams, setSearchParams] = useSearchParams();
-    const isSuccess = searchParams.get("register") === "success";
 
-    const handleClose = () => {
-        const newParams = new URLSearchParams(searchParams);
-        newParams.delete("register");
-        setSearchParams(newParams, { replace: true });
-    };
+    const registerStatus = searchParams.get("register");
+
+    const fetcher = useFetcher();
+    const errors = fetcher.data;
+
+    const submitting = fetcher.state === "submitting";
+
+    useEffect(() => {
+        if (registerStatus === "success") {
+            enqueueSnackbar("Uživatel byl úspěšně registrován", { variant: "success" });
+        }
+        setSearchParams({}, { replace: true });
+    }, [registerStatus, enqueueSnackbar, setSearchParams]);
 
     return (
-        <Form method="post">
-            <Toast
-                isOpen={isSuccess}
-                onClose={handleClose}
-                message="Registrace proběhla úspěšně!"
-            />
-            <Stack spacing={2}>
+        <fetcher.Form method="post" action={mode === "login" ? "/auth?index" : "/auth/register"}>
+            <Stack spacing={2.5}>
                 {errors?.serverError && (
-                    <Typography color="error" textAlign="center" variant="body2">
+                    <Alert severity="error" sx={{ borderRadius: "10px", fontSize: "0.85rem" }}>
                         {errors.serverError}
-                    </Typography>
+                    </Alert>
                 )}
+
                 {mode === "register" && (
                     <TextField
                         label="Jméno"
@@ -43,7 +45,18 @@ function AuthForm({ mode, children }: AuthFormProps) {
                         helperText={errors?.fullname}
                         name="fullname"
                         type="text"
-                        variant="standard"
+                        variant="outlined"
+                        size="medium"
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <PersonOutlineIcon
+                                        fontSize="small"
+                                        sx={{ mr: 1, color: "text.secondary" }}
+                                    />
+                                ),
+                            },
+                        }}
                     />
                 )}
 
@@ -53,38 +66,70 @@ function AuthForm({ mode, children }: AuthFormProps) {
                     helperText={errors?.email}
                     name="email"
                     type="email"
-                    variant="standard"
+                    variant="outlined"
+                    size="medium"
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <EmailOutlinedIcon
+                                    fontSize="small"
+                                    sx={{ mr: 1, color: "text.secondary" }}
+                                />
+                            ),
+                        },
+                    }}
                 />
+
                 <TextField
                     label="Heslo"
                     error={!!errors?.password}
                     helperText={errors?.password}
                     name="password"
                     type="password"
-                    variant="standard"
+                    variant="outlined"
+                    size="medium"
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <LockOutlinedIcon
+                                    fontSize="small"
+                                    sx={{ mr: 1, color: "text.secondary" }}
+                                />
+                            ),
+                        },
+                    }}
                 />
 
-                <Box pt={1}>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        size="large"
-                        fullWidth
-                        disabled={submitting}
-                    >
-                        {submitting
-                            ? "Zpracovávám"
-                            : mode === "register"
-                              ? "Registrujte se"
-                              : "Přihlašte se"}
-                    </Button>
-                </Box>
-
-                <Box textAlign="center" pt={{ xs: 2, md: 2 }}>
-                    <Typography variant="body1">{children}</Typography>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    size="large"
+                    fullWidth
+                    disabled={submitting}
+                    sx={{ mt: 0.5 }}
+                >
+                    {submitting
+                        ? "Zpracovávám…"
+                        : mode === "register"
+                          ? "Vytvořit účet"
+                          : "Přihlásit se"}
+                </Button>
+                <Box
+                    textAlign="center"
+                    pt={0.5}
+                    sx={{
+                        borderTop: "1px solid",
+                        borderColor: "divider",
+                        mt: 1,
+                        pt: 2,
+                    }}
+                >
+                    <Typography variant="body2" color="text.secondary">
+                        {children}
+                    </Typography>
                 </Box>
             </Stack>
-        </Form>
+        </fetcher.Form>
     );
 }
 

@@ -1,5 +1,5 @@
 import { supabase } from "../../supabase/client";
-import type { AuthFormInputs } from "../../types/auth";
+import type { AuthFormInputs } from "../../types";
 import { redirect, type ActionFunctionArgs } from "react-router";
 
 export async function loginAction({ request }: ActionFunctionArgs) {
@@ -31,8 +31,8 @@ export async function loginAction({ request }: ActionFunctionArgs) {
         return errors;
     }
 
-    console.log("Data:", data);
-    console.log("Error", error);
+    //console.log("Data:", data);
+    //console.log("Error", error);
 
     if (data.session) {
         return redirect(`/`);
