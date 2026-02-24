@@ -22,12 +22,12 @@ import { authMiddleware } from "../router/middleware/authMiddleware";
 import { addItemAction } from "../router/actions/addItemAction";
 import { deleteItemAction } from "../router/actions/deleteItemAction";
 import { addMealAction } from "../router/actions/addMealAction";
+import { deleteMealAction } from "../router/actions/deleteMealAction";
 
 //Loaders
 import { itemsLoader } from "../router/loaders/itemsLoader";
 import { mealsLoader } from "../router/loaders/mealsLoader";
 import { itemsAndCategoriesLoader } from "../router/loaders/itemsAndCatagories";
-
 const router = createBrowserRouter([
     {
         path: "/auth",
@@ -62,6 +62,10 @@ const router = createBrowserRouter([
                         Component: AddMealPage,
                         loader: itemsAndCategoriesLoader,
                         action: addMealAction,
+                    },
+                    {
+                        path: "delete",
+                        action: deleteMealAction,
                     },
                 ],
             },
