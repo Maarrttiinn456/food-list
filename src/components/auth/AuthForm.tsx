@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { Typography, TextField, Button, Box, Stack, Alert } from "@mui/material";
+import { Typography, TextField, Button, Box, Stack, Alert, alpha } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -15,9 +15,15 @@ function AuthForm({ mode, children }: AuthFormProps) {
 
     return (
         <fetcher.Form method="post" action={mode === "login" ? "/auth?index" : "/auth/register"}>
-            <Stack spacing={2.5}>
+            <Stack spacing={3}>
                 {errors?.serverError && (
-                    <Alert severity="error" sx={{ borderRadius: "10px", fontSize: "0.85rem" }}>
+                    <Alert
+                        severity="error"
+                        sx={{
+                            borderRadius: "12px",
+                            fontSize: "0.85rem",
+                        }}
+                    >
                         {errors.serverError}
                     </Alert>
                 )}
@@ -31,12 +37,13 @@ function AuthForm({ mode, children }: AuthFormProps) {
                         type="text"
                         variant="outlined"
                         size="medium"
+                        fullWidth
                         slotProps={{
                             input: {
                                 startAdornment: (
                                     <PersonOutlineIcon
                                         fontSize="small"
-                                        sx={{ mr: 1, color: "text.secondary" }}
+                                        sx={{ mr: 1.25, color: "text.secondary" }}
                                     />
                                 ),
                             },
@@ -52,12 +59,13 @@ function AuthForm({ mode, children }: AuthFormProps) {
                     type="email"
                     variant="outlined"
                     size="medium"
+                    fullWidth
                     slotProps={{
                         input: {
                             startAdornment: (
                                 <EmailOutlinedIcon
                                     fontSize="small"
-                                    sx={{ mr: 1, color: "text.secondary" }}
+                                    sx={{ mr: 1.25, color: "text.secondary" }}
                                 />
                             ),
                         },
@@ -72,12 +80,13 @@ function AuthForm({ mode, children }: AuthFormProps) {
                     type="password"
                     variant="outlined"
                     size="medium"
+                    fullWidth
                     slotProps={{
                         input: {
                             startAdornment: (
                                 <LockOutlinedIcon
                                     fontSize="small"
-                                    sx={{ mr: 1, color: "text.secondary" }}
+                                    sx={{ mr: 1.25, color: "text.secondary" }}
                                 />
                             ),
                         },
@@ -90,7 +99,20 @@ function AuthForm({ mode, children }: AuthFormProps) {
                     size="large"
                     fullWidth
                     disabled={isSubmitting}
-                    sx={{ mt: 0.5 }}
+                    sx={{
+                        mt: 0.5,
+                        py: 1.6,
+                        fontSize: "1rem",
+                        borderRadius: "14px",
+                        fontWeight: 700,
+                        letterSpacing: "0.01em",
+                        boxShadow: (theme) =>
+                            `0 4px 20px ${alpha(theme.palette.primary.main, 0.35)}`,
+                        "&:hover": {
+                            boxShadow: (theme) =>
+                                `0 6px 28px ${alpha(theme.palette.primary.main, 0.45)}`,
+                        },
+                    }}
                 >
                     {isSubmitting
                         ? "Zpracovávám…"
@@ -98,14 +120,13 @@ function AuthForm({ mode, children }: AuthFormProps) {
                           ? "Vytvořit účet"
                           : "Přihlásit se"}
                 </Button>
+
                 <Box
                     textAlign="center"
-                    pt={0.5}
                     sx={{
                         borderTop: "1px solid",
                         borderColor: "divider",
-                        mt: 1,
-                        pt: 2,
+                        pt: 2.5,
                     }}
                 >
                     <Typography variant="body2" color="text.secondary">

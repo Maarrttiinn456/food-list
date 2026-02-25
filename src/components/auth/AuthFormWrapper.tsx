@@ -12,11 +12,14 @@ const AuthFormWrapper = ({ title, description, children }: AuthFormWrapperProps)
         <Card
             elevation={0}
             sx={{
-                border: "1.5px solid",
-                borderColor: "divider",
                 borderRadius: "16px",
                 boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                 background: "#fff",
+                // Disable global card hover transform from theme
+                "&:hover": {
+                    transform: "none",
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                },
             }}
         >
             <CardContent sx={{ p: { xs: 3, sm: 4 } }}>

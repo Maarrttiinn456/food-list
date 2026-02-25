@@ -20,7 +20,7 @@ const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
                     justifyContent: "center",
                     gap: 1.5,
                     py: 8,
-                    color: "secondary",
+                    color: "text.secondary",
                 }}
             >
                 <LocalGroceryStoreOutlinedIcon sx={{ fontSize: 48, opacity: 0.35 }} />
@@ -41,7 +41,7 @@ const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
                 handleConfirmDelete={handleConfirmDelete}
             />
 
-            <Stack spacing={0.75}>
+            <Stack spacing={1}>
                 {items.map((item) => (
                     <Box
                         key={item.id}
@@ -51,10 +51,16 @@ const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
                             justifyContent: "space-between",
                             px: 2.5,
                             py: 1.5,
-                            borderRadius: "12px",
-                            border: "1.5px solid",
-                            borderColor: "divider",
+                            borderRadius: "14px",
                             background: "#fff",
+                            boxShadow:
+                                "0 1px 3px rgba(15,23,42,0.05), 0 2px 8px rgba(15,23,42,0.05)",
+                            transition: "box-shadow 0.2s ease, transform 0.2s ease",
+                            "&:hover": {
+                                boxShadow:
+                                    "0 2px 8px rgba(15,23,42,0.08), 0 6px 20px rgba(15,23,42,0.08)",
+                                transform: "translateY(-1px)",
+                            },
                         }}
                     >
                         <Typography variant="body1" sx={{ fontWeight: 500, color: "text.primary" }}>
@@ -66,6 +72,7 @@ const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
                             size="small"
                             onClick={() => handleClickOpen(item.id)}
                             color="error"
+                            sx={{ opacity: 0.6, "&:hover": { opacity: 1 } }}
                         >
                             <DeleteOutlineIcon fontSize="small" />
                         </IconButton>

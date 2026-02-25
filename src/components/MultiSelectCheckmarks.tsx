@@ -15,7 +15,7 @@ const MenuProps = {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
             width: 250,
-            borderRadius: 12,
+            borderRadius: 16,
         },
     },
 };
@@ -36,7 +36,6 @@ export default function MultipleSelectCheckmarks({
             target: { value },
         } = event;
         const newNames = typeof value === "string" ? value.split(",") : value;
-
         const newSelected = categories.filter(
             (category) => category.name && newNames.includes(category.name)
         );
@@ -44,44 +43,36 @@ export default function MultipleSelectCheckmarks({
     };
 
     return (
-        <div>
-            <FormControl sx={{ width: "100%" }}>
-                <InputLabel id="demo-multiple-checkbox-label">Kategorie</InputLabel>
-                <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    multiple
-                    value={selectedNames}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Kategorie" sx={{ borderRadius: "10px" }} />}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                >
-                    {categories &&
-                        categories.map((category) => {
-                            const selected = category.name
-                                ? selectedNames.includes(category.name)
-                                : false;
-                            const SelectionIcon = selected
-                                ? CheckBoxIcon
-                                : CheckBoxOutlineBlankIcon;
+        <FormControl fullWidth>
+            <InputLabel id="categories-label">Kategorie</InputLabel>
+            <Select
+                labelId="categories-label"
+                id="categories-select"
+                multiple
+                value={selectedNames}
+                onChange={handleChange}
+                input={<OutlinedInput label="Kategorie" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+            >
+                {categories &&
+                    categories.map((category) => {
+                        const selected = category.name
+                            ? selectedNames.includes(category.name)
+                            : false;
+                        const SelectionIcon = selected ? CheckBoxIcon : CheckBoxOutlineBlankIcon;
 
-                            return (
-                                <MenuItem key={category.id} value={category.name ?? ""}>
-                                    <SelectionIcon
-                                        fontSize="small"
-                                        style={{
-                                            marginRight: 8,
-                                            padding: 9,
-                                            boxSizing: "content-box",
-                                        }}
-                                    />
-                                    <ListItemText primary={category.name} />
-                                </MenuItem>
-                            );
-                        })}
-                </Select>
-            </FormControl>
-        </div>
+                        return (
+                            <MenuItem key={category.id} value={category.name ?? ""}>
+                                <SelectionIcon
+                                    fontSize="small"
+                                    style={{ marginRight: 8, padding: 9, boxSizing: "content-box" }}
+                                />
+                                <ListItemText primary={category.name} />
+                            </MenuItem>
+                        );
+                    })}
+            </Select>
+        </FormControl>
     );
 }

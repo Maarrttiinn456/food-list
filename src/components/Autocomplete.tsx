@@ -15,17 +15,7 @@ const Autocomplete = ({ items, actions }: AutocompleteProps) => {
             getOptionLabel={(option: Item) => option.name}
             onChange={(_, newValue) => actions.handleAddItem(newValue)}
             renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Přidat surovinu"
-                    placeholder="Začni psát název…"
-                    sx={{
-                        "& .MuiOutlinedInput-root": {
-                            borderRadius: "10px",
-                            bgcolor: "background.paper",
-                        },
-                    }}
-                />
+                <TextField {...params} label="Přidat surovinu" placeholder="Začni psát název…" />
             )}
         />
     );

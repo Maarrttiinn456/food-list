@@ -8,17 +8,8 @@ const Header = () => {
     const { user, logOut } = useAuth();
 
     return (
-        <AppBar
-            position="static"
-            elevation={0}
-            sx={{
-                background: "transparent",
-                borderBottom: "1.5px solid",
-                borderColor: "divider",
-                backdropFilter: "blur(8px)",
-            }}
-        >
-            <Toolbar sx={{ justifyContent: "space-between", px: { xs: 0, sm: 0 } }}>
+        <AppBar position="static" elevation={0}>
+            <Toolbar sx={{ justifyContent: "space-between", px: 2, minHeight: 56 }}>
                 <Box
                     component={Link}
                     to="/"
@@ -27,9 +18,9 @@ const Header = () => {
                     gap={1}
                     sx={{ textDecoration: "none" }}
                 >
-                    <RestaurantMenuIcon sx={{ color: "primary.main", fontSize: 30 }} />
+                    <RestaurantMenuIcon sx={{ color: "primary.main", fontSize: 26 }} />
                     <Typography
-                        variant="h5"
+                        variant="h6"
                         fontWeight={800}
                         letterSpacing="-0.5px"
                         color="text.primary"
@@ -42,7 +33,11 @@ const Header = () => {
                 </Box>
 
                 <Box display="flex" alignItems="center" gap={1}>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ display: { xs: "none", sm: "block" } }}
+                    >
                         Vítej,{" "}
                         <Box component="span" fontWeight={700} color="text.primary">
                             {user?.name.split(" ")[0] ?? ""}
@@ -53,10 +48,7 @@ const Header = () => {
                         <IconButton
                             size="small"
                             onClick={logOut}
-                            sx={{
-                                color: "text.primary",
-                                "&:hover": { color: "error.main" },
-                            }}
+                            sx={{ color: "text.primary", "&:hover": { color: "error.main" } }}
                         >
                             <LogoutIcon fontSize="small" />
                         </IconButton>
