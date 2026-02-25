@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -30,25 +29,18 @@ export default function MultipleSelectCheckmarks({
     selectedCategories?: Category[];
     onChange: (categories: Category[]) => void;
 }) {
-    const [items, setItems] = useState<string[]>(
-        selectedCategories.map((c) => c.name).filter((n): n is string => !!n)
-    );
+    const selectedNames = selectedCategories.map((c) => c.name ?? "");
 
-    useEffect(() => {
-        setItems(selectedCategories.map((c) => c.name).filter((n): n is string => !!n));
-    }, [selectedCategories]);
-
-    const handleChange = (event: SelectChangeEvent<typeof items>) => {
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
         const {
             target: { value },
         } = event;
-        const newItems = typeof value === "string" ? value.split(",") : value;
-        setItems(newItems);
+        const newNames = typeof value === "string" ? value.split(",") : value;
 
-        const selectedCaregories = categories.filter(
-            (category) => category.name && newItems.includes(category.name)
+        const newSelected = categories.filter(
+            (category) => category.name && newNames.includes(category.name)
         );
-        onChange(selectedCaregories);
+        onChange(newSelected);
     };
 
     return (
@@ -59,7 +51,7 @@ export default function MultipleSelectCheckmarks({
                     labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
                     multiple
-                    value={items}
+                    value={selectedNames}
                     onChange={handleChange}
                     input={<OutlinedInput label="Kategorie" sx={{ borderRadius: "10px" }} />}
                     renderValue={(selected) => selected.join(", ")}
@@ -67,7 +59,9 @@ export default function MultipleSelectCheckmarks({
                 >
                     {categories &&
                         categories.map((category) => {
-                            const selected = category.name ? items.includes(category.name) : false;
+                            const selected = category.name
+                                ? selectedNames.includes(category.name)
+                                : false;
                             const SelectionIcon = selected
                                 ? CheckBoxIcon
                                 : CheckBoxOutlineBlankIcon;
