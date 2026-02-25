@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, alpha, useTheme } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
 interface PageHeaderProps {
@@ -8,8 +8,6 @@ interface PageHeaderProps {
 }
 
 const PageHeader = ({ title, subtitle, icon }: PageHeaderProps) => {
-    const theme = useTheme();
-
     return (
         <Stack direction="row" alignItems="center" spacing={1.5} mb={4}>
             <Box
@@ -20,14 +18,14 @@ const PageHeader = ({ title, subtitle, icon }: PageHeaderProps) => {
                     width: 44,
                     height: 44,
                     borderRadius: "12px",
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
-                    color: "primary.main",
+                    bgcolor: "primary.main",
+                    color: "white",
                 }}
             >
                 {icon}
             </Box>
             <Box>
-                <Typography variant="h5" fontWeight={700} lineHeight={1.2}>
+                <Typography variant="h6" fontWeight={700} lineHeight={1.2}>
                     {title}
                 </Typography>
                 {subtitle && (

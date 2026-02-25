@@ -14,6 +14,22 @@ export type MealItem = Item & {
     quantity: string;
 };
 
+export type Meal = Tables<"meals">;
 export type Category = Tables<"categories">;
 
-export type Meal = Tables<"meals">;
+/* Relations */
+export type MealWithRelations = Meal & {
+    meal_items: {
+        quantity: string;
+        items: Item;
+    }[];
+    meal_categories: {
+        categories: Category;
+    }[];
+};
+
+/**/
+export type ActionResponse = {
+    ok: boolean;
+    message: string;
+};

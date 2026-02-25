@@ -1,4 +1,4 @@
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useState, useMemo } from "react";
 import { useLoaderData } from "react-router";
 import { Box, Typography } from "@mui/material";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
@@ -15,8 +15,12 @@ const ItemsPage = () => {
 
     const isProcesed = deferredValue !== query;
 
-    const filtredItems = data.filter((item) =>
-        item.name.toLocaleLowerCase().includes(deferredValue.toLocaleLowerCase())
+    const filtredItems = useMemo(
+        () =>
+            data.filter((item) =>
+                item.name.toLocaleLowerCase().includes(deferredValue.toLocaleLowerCase())
+            ),
+        [data, deferredValue]
     );
 
     return (
@@ -38,10 +42,10 @@ const ItemsPage = () => {
             >
                 {filtredItems.length > 0 && <ItemsList items={filtredItems} />}
 
-                {filtredItems.length === 0 && query.length > 0 && (
+                {filtredItems.length === 0 && (
                     <Typography
                         variant="body2"
-                        sx={{ textAlign: "center", mt: 6, color: "text.secondary" }}
+                        sx={{ textAlign: "center", mt: 6, color: "secondary" }}
                     >
                         Žádná shoda pro „{query}". Stiskni <strong>Přidat</strong> pro vytvoření
                         nové položky.

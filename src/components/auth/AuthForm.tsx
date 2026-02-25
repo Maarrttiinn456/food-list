@@ -1,10 +1,9 @@
-import { useEffect, type ReactNode } from "react";
-import { useFetcher, useSearchParams } from "react-router";
+import { type ReactNode } from "react";
 import { Typography, TextField, Button, Box, Stack, Alert } from "@mui/material";
-import { useSnackbar } from "notistack";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import { useAuthForm } from "../../hooks/useAuthFormData";
 
 type AuthFormProps = {
     mode: "register" | "login";
@@ -12,22 +11,7 @@ type AuthFormProps = {
 };
 
 function AuthForm({ mode, children }: AuthFormProps) {
-    const { enqueueSnackbar } = useSnackbar();
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    const registerStatus = searchParams.get("register");
-
-    const fetcher = useFetcher();
-    const errors = fetcher.data;
-
-    const submitting = fetcher.state === "submitting";
-
-    useEffect(() => {
-        if (registerStatus === "success") {
-            enqueueSnackbar("Uživatel byl úspěšně registrován", { variant: "success" });
-        }
-        setSearchParams({}, { replace: true });
-    }, [registerStatus, enqueueSnackbar, setSearchParams]);
+    const { fetcher, errors, isSubmitting } = useAuthForm();
 
     return (
         <fetcher.Form method="post" action={mode === "login" ? "/auth?index" : "/auth/register"}>
@@ -105,10 +89,10 @@ function AuthForm({ mode, children }: AuthFormProps) {
                     type="submit"
                     size="large"
                     fullWidth
-                    disabled={submitting}
+                    disabled={isSubmitting}
                     sx={{ mt: 0.5 }}
                 >
-                    {submitting
+                    {isSubmitting
                         ? "Zpracovávám…"
                         : mode === "register"
                           ? "Vytvořit účet"

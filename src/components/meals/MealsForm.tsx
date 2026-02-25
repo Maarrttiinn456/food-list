@@ -7,16 +7,20 @@ import Autocomplete from "../Autocomplete";
 import type { CategoriesLoaderData } from "../../router/loaders/catagoriesLoader";
 import type { ItemsLoaderData } from "../../router/loaders/itemsLoader";
 
-const MealsForm = () => {
-    const { items, categories } = useLoaderData<{
+import type { MealWithRelations } from "../../types";
+
+const MealsForm = ({ isEditMode = false }: { isEditMode?: boolean }) => {
+    const loaderData = useLoaderData<{
         items: ItemsLoaderData;
         categories: CategoriesLoaderData;
+        meal?: MealWithRelations;
     }>();
-    const { state, actions } = useMealsForm();
+
+    const { items, categories, meal } = loaderData;
+    const { state, actions } = useMealsForm(isEditMode ? meal : undefined);
 
     return (
         <Stack spacing={3} sx={{ width: "100%" }}>
-            {/* ── Název a popis ── */}
             <Box
                 sx={{
                     p: 3,
@@ -63,18 +67,16 @@ const MealsForm = () => {
                 </Stack>
             </Box>
 
-            {/* ── Kategorie ── */}
             {categories && (
                 <MultiSelectCheckmarks
                     categories={categories}
+                    selectedCategories={state.categories}
                     onChange={actions.handleCategoryChange}
                 />
             )}
 
-            {/* ── Přidat surovinu ── */}
             {items && <Autocomplete items={items} actions={actions} />}
 
-            {/* ── Seznam surovin ── */}
             <Stack spacing={1}>
                 {state.itemsList.length === 0 ? (
                     <Box
@@ -145,7 +147,6 @@ const MealsForm = () => {
                 )}
             </Stack>
 
-            {/* ── Sumarizační řádek ── */}
             {state.itemsList.length > 0 && (
                 <Box display="flex" gap={1} flexWrap="wrap">
                     <Chip
@@ -158,7 +159,6 @@ const MealsForm = () => {
                 </Box>
             )}
 
-            {/* ── Submit ── */}
             <Button
                 variant="contained"
                 type="submit"

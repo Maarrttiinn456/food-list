@@ -12,6 +12,7 @@ import ItemsPage from "./ItemsPage";
 import MealsPage from "./MealsPage";
 import AddMealPage from "./AddMealPage";
 import ErrorPage from "./ErrorPage";
+import UpdateMealPage from "./UpdateMealPage";
 
 //midlewares
 import { loginAction } from "../router/actions/loginAction";
@@ -28,6 +29,8 @@ import { deleteMealAction } from "../router/actions/deleteMealAction";
 import { itemsLoader } from "../router/loaders/itemsLoader";
 import { mealsLoader } from "../router/loaders/mealsLoader";
 import { itemsAndCategoriesLoader } from "../router/loaders/itemsAndCatagories";
+import { updateMealLoader } from "../router/loaders/updateMealLoader";
+
 const router = createBrowserRouter([
     {
         path: "/auth",
@@ -44,10 +47,17 @@ const router = createBrowserRouter([
         Component: MainLayout,
         children: [
             { index: true, Component: ShoppingListsPage },
-            { path: "items", Component: ItemsPage, action: addItemAction, loader: itemsLoader },
             {
-                path: "delete-item",
-                action: deleteItemAction,
+                path: "items",
+                Component: ItemsPage,
+                action: addItemAction,
+                loader: itemsLoader,
+                children: [
+                    {
+                        path: "delete",
+                        action: deleteItemAction,
+                    },
+                ],
             },
             {
                 path: "meals",
@@ -66,6 +76,12 @@ const router = createBrowserRouter([
                     {
                         path: "delete",
                         action: deleteMealAction,
+                    },
+                    {
+                        path: "edit/:mealId",
+                        Component: UpdateMealPage,
+                        loader: updateMealLoader,
+                        action: addMealAction,
                     },
                 ],
             },

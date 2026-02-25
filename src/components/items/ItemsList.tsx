@@ -1,37 +1,14 @@
-import { useState } from "react";
-import { useFetcher } from "react-router";
-import { useSnackbar } from "notistack";
-import { Box, Typography, IconButton, Stack, alpha } from "@mui/material";
+import { Box, Typography, IconButton, Stack } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import LocalGroceryStoreOutlinedIcon from "@mui/icons-material/LocalGroceryStoreOutlined";
 import ConfromDialog from "../ConfromDialog";
 import type { ItemsLoaderData } from "../../router/loaders/itemsLoader";
-import type { AddItemActionData } from "../../router/actions/addItemAction";
+import useDelete from "../../hooks/useDelete";
 
 const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
-    const { enqueueSnackbar } = useSnackbar();
-    const [confrimOpen, setConfrimOpen] = useState(false);
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-
-    const fetcher = useFetcher<AddItemActionData>();
-
-    const handleClickOpen = (id: string) => {
-        setSelectedId(id);
-        setConfrimOpen(true);
-    };
-
-    const handleClose = () => {
-        setConfrimOpen(false);
-        setSelectedId(null);
-    };
-
-    const handleConfirmDelete = () => {
-        if (selectedId) {
-            fetcher.submit({ itemId: selectedId }, { method: "post", action: "/delete-item" });
-        }
-        handleClose();
-        enqueueSnackbar("Položka smazána", { variant: "success" });
-    };
+    const { handleClickOpen, handleClose, handleConfirmDelete, confrimOpen } = useDelete({
+        action: "/items/delete",
+    });
 
     if (items.length === 0) {
         return (
@@ -43,7 +20,7 @@ const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
                     justifyContent: "center",
                     gap: 1.5,
                     py: 8,
-                    color: "text.secondary",
+                    color: "secondary",
                 }}
             >
                 <LocalGroceryStoreOutlinedIcon sx={{ fontSize: 48, opacity: 0.35 }} />
@@ -88,13 +65,7 @@ const ItemsList = ({ items }: { items: ItemsLoaderData }) => {
                             aria-label="smazat"
                             size="small"
                             onClick={() => handleClickOpen(item.id)}
-                            sx={{
-                                color: "error.main",
-                                borderRadius: "8px",
-                                "&:hover": {
-                                    background: (theme) => alpha(theme.palette.error.main, 0.1),
-                                },
-                            }}
+                            color="error"
                         >
                             <DeleteOutlineIcon fontSize="small" />
                         </IconButton>

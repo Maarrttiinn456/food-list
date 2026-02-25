@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
 import { supabase } from "../../supabase/client";
 import { userContextMiddleware } from "../context/authContext";
-import type { ActionResponse } from "./addItemAction";
+import type { ActionResponse } from "../../types";
 import type { MealItem } from "../../types";
 import type { Category } from "../../types";
 

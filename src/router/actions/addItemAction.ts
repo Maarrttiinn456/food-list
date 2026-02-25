@@ -1,11 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
 import { supabase } from "../../supabase/client";
 import { userContextMiddleware } from "../context/authContext";
-
-export type ActionResponse = {
-    ok: boolean;
-    message: string;
-};
+import type { ActionResponse } from "../../types";
 
 export async function addItemAction({
     request,
@@ -48,5 +44,3 @@ export async function addItemAction({
 
     return { ok: true, message: "Položka byla úspěšně přidána." };
 }
-
-export type AddItemActionData = Awaited<ReturnType<typeof addItemAction>>;

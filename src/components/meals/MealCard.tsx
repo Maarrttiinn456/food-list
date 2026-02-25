@@ -13,44 +13,20 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuAction from "./MealMenuAction";
 import type { MelasWithItemsLoader } from "../../router/loaders/mealsLoader";
-import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
-import { useSnackbar } from "notistack";
+import { useState } from "react";
 
 type MealCardProps = {
     meal: MelasWithItemsLoader["mealsWithItems"][number];
 };
 
 const MealCard = ({ meal }: MealCardProps) => {
-    const fetcher = useFetcher();
-    const { enqueueSnackbar } = useSnackbar();
-
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+    const mealId = meal.id;
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
-
-    const handleDeleteMeal = () => {
-        fetcher.submit(
-            {
-                mealId: meal.id,
-            },
-            {
-                method: "delete",
-                action: `/meals/delete`,
-            }
-        );
-    };
-
-    useEffect(() => {
-        if (!fetcher.data) return;
-        if (fetcher.data?.ok) {
-            enqueueSnackbar(fetcher.data.message, { variant: "success" });
-        } else {
-            enqueueSnackbar(fetcher.data?.message, { variant: "error" });
-        }
-    }, [fetcher.data]);
 
     return (
         <>
@@ -149,7 +125,7 @@ const MealCard = ({ meal }: MealCardProps) => {
                 )}
             </Card>
 
-            <MenuAction anchorEl={anchorEl} onDelete={handleDeleteMeal} setAnchorEl={setAnchorEl} />
+            <MenuAction anchorEl={anchorEl} setAnchorEl={setAnchorEl} mealId={mealId} />
         </>
     );
 };

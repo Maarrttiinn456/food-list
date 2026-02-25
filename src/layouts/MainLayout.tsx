@@ -1,12 +1,16 @@
 import { Outlet } from "react-router";
-import { Container } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import Navigation from "../components/Navigation";
+import Header from "../components/GlobalHeader";
 
 const MainLayout = () => {
     return (
-        <Container sx={{ pt: 4, pb: 10 }} maxWidth="md">
-            <Outlet />
-            <Navigation />
+        <Container maxWidth="md">
+            <Header />
+            <Box sx={{ pt: 4, pb: 10 }}>
+                <Outlet />
+                <Navigation />
+            </Box>
         </Container>
     );
 };
