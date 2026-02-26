@@ -97,9 +97,6 @@ const AuthLayout = () => {
                         >
                             FoodList
                         </Typography>
-                        <Typography variant="h6" fontWeight={400} sx={{ opacity: 0.8, mt: 1 }}>
-                            Tvůj chytrý potravinový deník
-                        </Typography>
                     </Box>
 
                     <Typography
@@ -127,28 +124,56 @@ const AuthLayout = () => {
                     px: { xs: 2, sm: 4 },
                 }}
             >
-                <Box sx={{ width: "100%", maxWidth: 420 }}>
-                    {/* Mobile-only logo */}
-                    <Stack
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                        gap={0.5}
-                        mb={4}
-                        display={{ xs: "flex", md: "none" }}
+                <Stack sx={{ width: "100%", maxWidth: 420 }} spacing={3}>
+                    <Box
+                        sx={{
+                            pt: 1,
+                            px: 2,
+                            py: 1.5,
+                            borderRadius: "12px",
+                            background: (theme) =>
+                                alpha(theme.palette.primary.main, 0.06),
+                            border: "1px solid",
+                            borderColor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.2),
+                        }}
                     >
-                        <RestaurantMenuIcon color="primary" sx={{ fontSize: 36 }} />
                         <Typography
-                            fontWeight={800}
-                            variant="h4"
-                            color="primary.main"
-                            letterSpacing="-0.5px"
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ display: "block", fontWeight: 600, mb: 0.5 }}
                         >
-                            FoodList
+                            Nechceš se přihlašovat vlastním emailem?
                         </Typography>
-                    </Stack>
-                    <Outlet />
-                </Box>
+                        <Typography variant="body2" color="text.secondary">
+                            Můžeš použít univerzální údaje:{" "}
+                            <Box
+                                component="span"
+                                sx={{
+                                    fontFamily: "monospace",
+                                    fontWeight: 600,
+                                    color: "text.primary",
+                                }}
+                            >
+                                food@list.cz
+                            </Box>{" "}
+                            /{" "}
+                            <Box
+                                component="span"
+                                sx={{
+                                    fontFamily: "monospace",
+                                    fontWeight: 600,
+                                    color: "text.primary",
+                                }}
+                            >
+                                foodlist
+                            </Box>
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Outlet />
+                    </Box>
+                </Stack>
             </Grid>
         </Grid>
     );

@@ -1,11 +1,26 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useSearchParams } from "react-router";
 import { Box, Typography, Stack } from "@mui/material";
-import type { MelasWithItemsLoader } from "../../router/loaders/mealsLoader";
+import type { MealsAndCategoriesLoaderData } from "../../router/loaders/mealsAndCategoriesLoader";
 import MealCard from "./MealCard";
 import RestaurantMenuOutlinedIcon from "@mui/icons-material/RestaurantMenuOutlined";
+import MealsFilter from "./MealsFilter";
 
 const MealsList = () => {
-    const { mealsWithItems } = useLoaderData<MelasWithItemsLoader>();
+    const loaderData = useLoaderData<MealsAndCategoriesLoaderData>();
+    const mealsWithItems = loaderData?.mealsWithItems ?? [];
+    const [searchParams] = useSearchParams();
+    const selectedCategoryIds = new Set(
+        searchParams.get("categories")?.split(",").filter(Boolean).map(Number) ?? []
+    );
+
+    const filteredMeals =
+        selectedCategoryIds.size === 0
+            ? mealsWithItems
+            : mealsWithItems.filter((meal) =>
+                  meal.meal_categories?.some(
+                      (mc) => mc.categories && selectedCategoryIds.has(mc.categories.id)
+                  )
+              );
 
     if (mealsWithItems.length === 0) {
         return (
@@ -30,9 +45,14 @@ const MealsList = () => {
 
     return (
         <Stack spacing={2}>
-            {mealsWithItems.map((meal) => (
-                <MealCard key={meal.id} meal={meal} />
-            ))}
+            <MealsFilter />
+            {filteredMeals.length === 0 ? (
+                <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
+                    Žádná jídla v zvolených kategoriích.
+                </Typography>
+            ) : (
+                filteredMeals.map((meal) => <MealCard key={meal.id} meal={meal} />)
+            )}
         </Stack>
     );
 };

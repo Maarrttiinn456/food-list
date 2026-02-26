@@ -56,7 +56,7 @@ const MealsForm = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                         value={state.mealDescription}
                         onChange={(e) => actions.setMealDescription(e.target.value)}
                         multiline
-                        placeholder="Stručný popis nebo poznámka…"
+                        placeholder="Odkaz na recept…"
                         slotProps={{
                             input: {
                                 disableUnderline: true,
@@ -109,7 +109,11 @@ const MealsForm = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                                 background: "#fff",
                             }}
                         >
-                            <Typography sx={{ fontWeight: 600, flex: 1 }}>{item.name}</Typography>
+                            <Typography
+                                sx={{ fontWeight: 600, flex: 1, textTransform: "capitalize" }}
+                            >
+                                {item.name}
+                            </Typography>
 
                             <Box display="flex" alignItems="center" gap={1}>
                                 <TextField

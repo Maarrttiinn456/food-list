@@ -20,24 +20,30 @@ export async function addItemAction({
 
     //Checked blank input
     if (!item || typeof item !== "string" || item.trim() === "") {
-        console.log("Prázdno");
-
         return { ok: false, message: "Název položky nesmí být prázdný." };
     }
 
-    //Connect database and push
+    const nameTrimmed = item.trim();
+    const nameLower = nameTrimmed.toLowerCase();
+
+    // Duplicita: porovnání bez ohledu na velikost písmen
+    const { data: existingItems } = await supabase
+        .from("items")
+        .select("name")
+        .eq("user_id", user.id);
+
+    const isDuplicate = existingItems?.some((row) => row.name?.toLowerCase() === nameLower);
+    if (isDuplicate) {
+        return { ok: false, message: "Tato položka již v seznamu existuje." };
+    }
+
     const { error: supabaseError } = await supabase
         .from("items")
-        .insert([{ name: item.trim(), user_id: user.id }])
+        .insert([{ name: nameTrimmed, user_id: user.id }])
         .select()
         .single();
 
     if (supabaseError) {
-        if (supabaseError.code === "23505") {
-            console.log("Duplicita");
-            return { ok: false, message: "Tato položka již v seznamu existuje." };
-        }
-
         console.error("Supabase error:", supabaseError);
         return { ok: false, message: "Nepodařilo se uložit položku." };
     }

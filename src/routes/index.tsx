@@ -5,13 +5,13 @@ import MainLayout from "../layouts/MainLayout";
 import AuthLayout from "../layouts/AuthLayout";
 
 //Pages
-import ShoppingListsPage from "./ShoppingListsPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import ItemsPage from "./ItemsPage";
 import MealsPage from "./MealsPage";
 import AddMealPage from "./AddMealPage";
 import ErrorPage from "./ErrorPage";
+import NotFoundPage from "./NotFoundPage";
 import UpdateMealPage from "./UpdateMealPage";
 
 //midlewares
@@ -27,7 +27,7 @@ import { deleteMealAction } from "../router/actions/deleteMealAction";
 
 //Loaders
 import { itemsLoader } from "../router/loaders/itemsLoader";
-import { mealsLoader } from "../router/loaders/mealsLoader";
+import { mealsAndCategoriesLoader } from "../router/loaders/mealsAndCategoriesLoader";
 import { itemsAndCategoriesLoader } from "../router/loaders/itemsAndCatagories";
 import { updateMealLoader } from "../router/loaders/updateMealLoader";
 
@@ -46,7 +46,11 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         Component: MainLayout,
         children: [
-            { index: true, Component: ShoppingListsPage },
+            {
+                index: true,
+                Component: MealsPage,
+                loader: mealsAndCategoriesLoader,
+            },
             {
                 path: "items",
                 Component: ItemsPage,
@@ -65,7 +69,7 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         Component: MealsPage,
-                        loader: mealsLoader,
+                        loader: mealsAndCategoriesLoader,
                     },
                     {
                         path: "add",
@@ -85,6 +89,7 @@ const router = createBrowserRouter([
                     },
                 ],
             },
+            { path: "*", Component: NotFoundPage },
         ],
     },
 ]);

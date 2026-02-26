@@ -1,9 +1,7 @@
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import FormatListBulletedAddIcon from "@mui/icons-material/FormatListBulletedAdd";
 import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
 import AddIcon from "@mui/icons-material/Add";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
@@ -12,10 +10,8 @@ import { Box, Typography, Tooltip, IconButton, alpha } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 
 const NAV_ITEMS = [
-    { label: "Seznam", value: "/", icon: <FormatListBulletedAddIcon /> },
     { label: "Jídla", value: "/meals", icon: <DinnerDiningIcon /> },
     { label: "Položky", value: "/items", icon: <AddIcon /> },
-    { label: "Recepty", value: "/recipes", icon: <MenuBookIcon /> },
 ];
 
 const Navigation = () => {

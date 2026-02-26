@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Autocomplete as MuiAutocomplete, TextField } from "@mui/material";
 import type { Item } from "../types";
 
@@ -9,11 +10,23 @@ interface AutocompleteProps {
 }
 
 const Autocomplete = ({ items, actions }: AutocompleteProps) => {
+    const [value, setValue] = useState<Item | null>(null);
+    const [inputValue, setInputValue] = useState("");
+
     return (
         <MuiAutocomplete
+            value={value}
+            inputValue={inputValue}
+            onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
             options={items}
             getOptionLabel={(option: Item) => option.name}
-            onChange={(_, newValue) => actions.handleAddItem(newValue)}
+            onChange={(_, newValue) => {
+                if (newValue) {
+                    actions.handleAddItem(newValue);
+                }
+                setValue(null);
+                setInputValue("");
+            }}
             renderInput={(params) => (
                 <TextField {...params} label="Přidat surovinu" placeholder="Začni psát název…" />
             )}

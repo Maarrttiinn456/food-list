@@ -132,10 +132,6 @@ const theme = createTheme({
                     "&:hover fieldset": {
                         borderColor: "rgba(15,23,42,0.25)",
                     },
-                    "&.Mui-focused": {
-                        boxShadow: `0 0 0 3px ${alpha(EMERALD[600], 0.18)}`,
-                        transform: "translateY(-1px)",
-                    },
                     "&.Mui-focused fieldset": {
                         borderWidth: "1.5px",
                         borderColor: `${EMERALD[600]} !important`,
