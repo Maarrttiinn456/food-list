@@ -27,20 +27,13 @@ Aplikace je nasazená na:
     npm install
     ```
 
-2. V kořeni projektu vytvořte soubor `.env` s proměnnými pro Supabase:
-
-    ```
-    VITE_SUPABASE_URL=https://váš-projekt.supabase.co
-    VITE_SUPABASE_PUBLISHABLE_KEY=váš-anon-public-key
-    ```
-
-3. Spusťte vývojový server:
+2. Spusťte vývojový server:
 
     ```bash
     npm run dev
     ```
 
-4. Aplikace poběží na adrese zobrazené v terminálu (obvykle `http://localhost:5173`).
+3. Aplikace poběží na adrese zobrazené v terminálu (obvykle `http://localhost:5173`).
 
 ## Skripty
 
