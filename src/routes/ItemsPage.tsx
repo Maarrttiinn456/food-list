@@ -7,6 +7,9 @@ import ItemsList from "../components/items/ItemsList";
 import type { ItemsLoaderData } from "../router/loaders/itemsLoader";
 import PageHeader from "../components/PageHeader";
 
+/** Vrátí řetězec bez diakritiky pro porovnávání**/
+const withoutDiacritics = (s: string) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
 const ItemsPage = () => {
     const data = useLoaderData<ItemsLoaderData>();
 
@@ -17,9 +20,11 @@ const ItemsPage = () => {
 
     const filtredItems = useMemo(
         () =>
-            data.filter((item) =>
-                item.name.toLocaleLowerCase().includes(deferredValue.toLocaleLowerCase())
-            ),
+            data.filter((item) => {
+                const name = withoutDiacritics(item.name.toLocaleLowerCase());
+                const search = withoutDiacritics(deferredValue.toLocaleLowerCase());
+                return name.includes(search);
+            }),
         [data, deferredValue]
     );
 
