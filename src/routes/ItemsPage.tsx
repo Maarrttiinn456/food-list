@@ -6,9 +6,7 @@ import ItemSearchAndAdd from "../components/items/ItemSearchAndAdd";
 import ItemsList from "../components/items/ItemsList";
 import type { ItemsLoaderData } from "../router/loaders/itemsLoader";
 import PageHeader from "../components/PageHeader";
-
-/** Vrátí řetězec bez diakritiky pro porovnávání**/
-const withoutDiacritics = (s: string) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+import { withoutDiacritics } from "../utils/withoutDiacritics";
 
 const ItemsPage = () => {
     const data = useLoaderData<ItemsLoaderData>();

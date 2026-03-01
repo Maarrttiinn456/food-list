@@ -11,7 +11,12 @@
         "preview": "vite preview",
         "prepare": "husky",
         "tsc": "tsc --noEmit",
-        "verify": "npm run tsc && npm run lint"
+        "verify": "npm run tsc && npm run lint",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:ui": "vitest --ui",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -20,7 +25,10 @@
         "@mui/material": "^7.3.7",
         "@supabase/supabase-js": "^2.95.3",
         "@tanstack/react-query": "^5.90.20",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
         "husky": "^9.1.7",
+        "jsdom": "^28.1.0",
         "notistack": "^3.0.2",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
@@ -29,12 +37,15 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.39.1",
+        "@playwright/test": "^1.58.2",
         "@types/node": "^24.10.1",
         "@types/react": "^19.2.5",
         "@types/react-dom": "^19.2.3",
         "@typescript-eslint/eslint-plugin": "^8.54.0",
         "@typescript-eslint/parser": "^8.54.0",
         "@vitejs/plugin-react": "^5.1.1",
+        "@vitest/ui": "^4.0.18",
+        "dotenv": "^17.3.1",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-import": "^2.32.0",
@@ -47,6 +58,7 @@
         "prettier": "^3.8.1",
         "typescript": "~5.9.3",
         "typescript-eslint": "^8.46.4",
-        "vite": "^7.2.4"
+        "vite": "^7.2.4",
+        "vitest": "^4.0.18"
     }
 }

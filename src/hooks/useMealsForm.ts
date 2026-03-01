@@ -73,6 +73,15 @@ const useMealsForm = (initialData?: MealWithRelations) => {
     };
 
     const handleSubmit = () => {
+        if (!mealName?.trim()) {
+            enqueueSnackbar("Vyplň název", { variant: "error" });
+            return;
+        }
+        if (itemsList.length === 0) {
+            enqueueSnackbar("Přidej suroviny", { variant: "error" });
+            return;
+        }
+
         const payload: Record<string, string> = {
             name: mealName,
             description: mealDescription,
